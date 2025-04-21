@@ -30,6 +30,10 @@ namespace AirQualityApp.Server
 
             app.MapControllers();
 
+            // 启用自动下载器
+            var autoHelper = new Helpers.AutoDownloadHelper();
+            autoHelper.Start();
+
             app.Run();
         }
     }

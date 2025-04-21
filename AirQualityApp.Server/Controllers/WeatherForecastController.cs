@@ -29,5 +29,22 @@ namespace AirQualityApp.Server.Controllers
             })
             .ToArray();
         }
+
+        [HttpGet("test")]
+        public string Test(DateTime dateTime)
+        {
+            return dateTime.Year < 2025 ? "Hello, world!" : "No world!";
+        }
+
+        [HttpPost("test1")]
+        public List<string> Test1(List<DateTime> dateTimes)
+        {
+            var output = new List<string>();
+            foreach(var dateTime in dateTimes)
+            {
+                output.Add(dateTime.Year < 2025 ? "Hello, world!" : "No world!");
+            }
+            return output;
+        }
     }
 }
