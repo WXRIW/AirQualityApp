@@ -58,10 +58,17 @@ namespace AirQualityApp.Server.Helpers
 
                 var area = new AirQualityAeraData
                 {
-                    Area = $"区域{groupId}",
+                    Area = ExtractAreaName(html),
+                    AreaId = groupId,
                     Date = parsedTime.Value,
                     Nodes = new List<AirQualityNodeData>()
                 };
+
+                static string ExtractAreaName(string html)
+                {
+                    var match = Regex.Match(html, "<span class=\"qy-name\">(.*?)</span>");
+                    return match.Success ? match.Groups[1].Value.Trim() : "未知区域";
+                }
 
                 foreach (Match row in rowMatches)
                 {
@@ -71,8 +78,20 @@ namespace AirQualityApp.Server.Helpers
                     string Clean(string s) => Regex.Replace(s, "<.*?>", string.Empty).Trim();
 
                     var qualityStr = Clean(cellMatches[8].Value);
-                    if (!Enum.TryParse(qualityStr, out AirQualityLevel quality))
-                        quality = AirQualityLevel.未知;
+                    qualityStr = qualityStr switch
+                    {
+                        "优" => "Excellent",
+                        "良" => "Good",
+                        "轻度污染" => "LightlyPolluted",
+                        "中度污染" => "ModeratelyPolluted",
+                        "重度污染" => "HeavilyPolluted",
+                        "严重污染" => "SeverelyPolluted",
+                        _ => "Unknown"
+                    };
+
+                    AirQualityLevel? quality = null;
+                    if (Enum.TryParse(qualityStr, out AirQualityLevel qualityLevel))
+                        quality = qualityLevel;
 
                     var node = new AirQualityNodeData
                     {
@@ -87,7 +106,7 @@ namespace AirQualityApp.Server.Helpers
                             NO2 = TryParseInt(Clean(cellMatches[6].Value)),
                             AQI = TryParseInt(Clean(cellMatches[7].Value)),
                             Quality = quality,
-                            PrimaryPollutant = Clean(cellMatches[9].Value)
+                            PrimaryPollutant = string.IsNullOrWhiteSpace(Clean(cellMatches[9].Value)) || Clean(cellMatches[9].Value) == "-" ? null : Clean(cellMatches[9].Value)
                         }
                     };
 
@@ -133,8 +152,8 @@ namespace AirQualityApp.Server.Helpers
             return null;
         }
 
-        private static int TryParseInt(string str) => int.TryParse(str, out int result) ? result : 9999;
+        private static int? TryParseInt(string str) => int.TryParse(str, out int result) ? result : null;
 
-        private static int TryParseFloatToInt(string str) => float.TryParse(str, out float f) ? (int)(f * 1000) : 9999;
+        private static int? TryParseFloatToInt(string str) => float.TryParse(str, out float f) ? (int)(f * 1000) : null;
     }
 }
