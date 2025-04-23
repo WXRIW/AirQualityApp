@@ -35,7 +35,7 @@ namespace AirQualityApp.Server.Controllers
         /// <param name="cityName">城市名，如 Shanghai</param>
         /// <returns>返回指定地区的空气质量数据，若无数据则返回 <see langword="null"</returns>
         [HttpGet("data/{cityName}/now")]
-        public AirQualityAreaData? GetCurrentAirQualityAreaDataByCity(string cityName)
+        public AirQualityAreaData? GetCurrentAirQualityDataByCity(string cityName)
         {
             throw new NotImplementedException();
         }
