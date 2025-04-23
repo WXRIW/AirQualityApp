@@ -40,7 +40,7 @@ namespace AirQualityApp.Server.Controllers
         public List<string> Test1(List<DateTime> dateTimes)
         {
             var output = new List<string>();
-            foreach(var dateTime in dateTimes)
+            foreach (var dateTime in dateTimes)
             {
                 output.Add(dateTime.Year < 2025 ? "Hello, world!" : "No world!");
             }

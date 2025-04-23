@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net.Http;
+﻿using AirQualityApp.Shared.Models;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using AirQualityApp.Server.Models;
 
 namespace AirQualityApp.Server.Helpers
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "<Pending>")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "SYSLIB1045:Convert to 'GeneratedRegexAttribute'.", Justification = "<Pending>")]
     public static class DataDownloadHelper
     {
         private static readonly string SaveFolder = Path.Combine(AppContext.BaseDirectory, "Data");
@@ -32,8 +29,8 @@ namespace AirQualityApp.Server.Helpers
             var httpClient = new HttpClient();
             var cityData = new AirQualityCityData
             {
-                City = "上海",
-                Areas = new List<AirQualityAeraData>()
+                City = new("上海"),
+                Areas = [],
             };
 
             foreach (var groupId in groupIds)
@@ -56,12 +53,11 @@ namespace AirQualityApp.Server.Helpers
 
                 var rowMatches = Regex.Matches(tableMatch.Groups[1].Value, @"<tr.*?>(.*?)</tr>", RegexOptions.Singleline);
 
-                var area = new AirQualityAeraData
+                var area = new AirQualityAreaData
                 {
-                    Area = ExtractAreaName(html),
-                    AreaId = groupId,
+                    Area = new(groupId, ExtractAreaName(html)),
                     Date = parsedTime.Value,
-                    Nodes = new List<AirQualityNodeData>()
+                    Nodes = [],
                 };
 
                 static string ExtractAreaName(string html)
@@ -75,7 +71,7 @@ namespace AirQualityApp.Server.Helpers
                     var cellMatches = Regex.Matches(row.Groups[1].Value, @"<td[^>]*?>(.*?)</td>", RegexOptions.Singleline);
                     if (cellMatches.Count < 10) continue;
 
-                    string Clean(string s) => Regex.Replace(s, "<.*?>", string.Empty).Trim();
+                    static string Clean(string s) => Regex.Replace(s, "<.*?>", string.Empty).Trim();
 
                     var qualityStr = Clean(cellMatches[8].Value);
                     qualityStr = qualityStr switch
@@ -95,7 +91,7 @@ namespace AirQualityApp.Server.Helpers
 
                     var node = new AirQualityNodeData
                     {
-                        Name = Clean(cellMatches[0].Value),
+                        Node = new(Clean(cellMatches[0].Value)),
                         AirQuality = new AirQuality
                         {
                             PM25 = TryParseInt(Clean(cellMatches[1].Value)),
@@ -119,6 +115,7 @@ namespace AirQualityApp.Server.Helpers
             return cityData;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1869:Cache and reuse 'JsonSerializerOptions' instances", Justification = "<Pending>")]
         private static void SaveToJson(AirQualityCityData data)
         {
             if (!Directory.Exists(SaveFolder))

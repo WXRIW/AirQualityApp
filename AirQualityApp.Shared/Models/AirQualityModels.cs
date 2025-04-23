@@ -1,26 +1,33 @@
-﻿namespace AirQualityApp.Server.Models
+﻿namespace AirQualityApp.Shared.Models
 {
+#nullable disable
+
     public class AirQualityCityData
     {
-        public string City { get; set; }
+        public CityInfo City { get; set; }
+
         public DateTime Date { get; set; }
-        public List<AirQualityAeraData> Areas { get; set; }
+
+        public List<AirQualityAreaData> Areas { get; set; }
     }
 
-    public class AirQualityAeraData
+    public class AirQualityAreaData
     {
-        public string Area { get; set; }
-        public int AreaId { get; set; }
+        public AreaInfo Area { get; set; }
+
         public DateTime Date { get; set; }
+
         public List<AirQualityNodeData> Nodes { get; set; }
     }
 
     public class AirQualityNodeData
     {
-        public string Name { get; set; }
+        public NodeInfo Node { get; set; }
 
         public AirQuality AirQuality { get; set; }
     }
+
+#nullable restore
 
     public enum AirQualityLevel
     {

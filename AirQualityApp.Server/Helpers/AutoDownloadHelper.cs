@@ -9,14 +9,14 @@
 
         public AutoDownloadHelper()
         {
-            _timer = new(1000 * 60 * 60); // 每小时执行一次
+            _timer = new(1000 * 10 * 60); // 每 10 分钟执行一次
             _timer.Elapsed += Timer_Elapsed;
         }
 
         public void Start()
         {
             _timer.Start();
-            Timer_Elapsed(null, null);
+            Timer_Elapsed(null, null!);
         }
 
         public void Stop()
