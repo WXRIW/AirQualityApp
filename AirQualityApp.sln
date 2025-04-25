@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AirQualityApp.Server", "Air
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AirQualityApp.Shared", "AirQualityApp.Shared\AirQualityApp.Shared.csproj", "{4918B41A-8223-44CA-AFF5-112AA3D8E431}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AirQualityApp.Api", "AirQualityApp.WebApi\AirQualityApp.Api.csproj", "{F91745E7-BA1F-4F44-A027-1CB33459F993}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AirQualityApp.Api", "AirQualityApp.Api\AirQualityApp.Api.csproj", "{F91745E7-BA1F-4F44-A027-1CB33459F993}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AirQualityApp.Api.Demo", "AirQualityApp.Api.Demo\AirQualityApp.Api.Demo.csproj", "{1CE53222-CD33-4DEB-A336-F6C8B6500482}"
 EndProject

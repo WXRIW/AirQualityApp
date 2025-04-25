@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AirQualityApp.WebApi\AirQualityApp.Api.csproj" />
+    <ProjectReference Include="..\AirQualityApp.Api\AirQualityApp.Api.csproj" />
   </ItemGroup>
 
 </Project>
