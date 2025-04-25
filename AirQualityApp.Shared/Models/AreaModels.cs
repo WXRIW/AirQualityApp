@@ -37,6 +37,7 @@
     public class NodeInfo : IAreaInfo
     {
         public NodeInfo() { }
+
         public NodeInfo(string name)
         {
             Name = name;

@@ -7,6 +7,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AirQualityApp.Server", "Air
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AirQualityApp.Shared", "AirQualityApp.Shared\AirQualityApp.Shared.csproj", "{4918B41A-8223-44CA-AFF5-112AA3D8E431}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AirQualityApp.Api", "AirQualityApp.WebApi\AirQualityApp.Api.csproj", "{F91745E7-BA1F-4F44-A027-1CB33459F993}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AirQualityApp.Api.Demo", "AirQualityApp.Api.Demo\AirQualityApp.Api.Demo.csproj", "{1CE53222-CD33-4DEB-A336-F6C8B6500482}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{B1E9751C-A6A2-48B4-A5F1-6327F08D6D67}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{430C221E-E510-454E-AF12-CA1F3B6F6620}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SDK", "SDK", "{3BC0BD47-45D5-4E53-977B-81FF8F316916}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,8 +31,22 @@ Global
 		{4918B41A-8223-44CA-AFF5-112AA3D8E431}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4918B41A-8223-44CA-AFF5-112AA3D8E431}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4918B41A-8223-44CA-AFF5-112AA3D8E431}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F91745E7-BA1F-4F44-A027-1CB33459F993}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F91745E7-BA1F-4F44-A027-1CB33459F993}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F91745E7-BA1F-4F44-A027-1CB33459F993}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F91745E7-BA1F-4F44-A027-1CB33459F993}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1CE53222-CD33-4DEB-A336-F6C8B6500482}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1CE53222-CD33-4DEB-A336-F6C8B6500482}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1CE53222-CD33-4DEB-A336-F6C8B6500482}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1CE53222-CD33-4DEB-A336-F6C8B6500482}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{65F1A0E6-1B69-4367-8C59-D57D8A954D1B} = {430C221E-E510-454E-AF12-CA1F3B6F6620}
+		{4918B41A-8223-44CA-AFF5-112AA3D8E431} = {3BC0BD47-45D5-4E53-977B-81FF8F316916}
+		{F91745E7-BA1F-4F44-A027-1CB33459F993} = {3BC0BD47-45D5-4E53-977B-81FF8F316916}
+		{1CE53222-CD33-4DEB-A336-F6C8B6500482} = {3BC0BD47-45D5-4E53-977B-81FF8F316916}
 	EndGlobalSection
 EndGlobal
