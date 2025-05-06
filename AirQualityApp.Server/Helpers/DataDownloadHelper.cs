@@ -13,24 +13,10 @@ namespace AirQualityApp.Server.Helpers
 
         public static async Task DownloadLatest()
         {
-            var tryMaxCount = 5;
-            while (tryMaxCount-- > 0)
+            var data = await FetchLatestData();
+            if (data != null)
             {
-                try
-                {
-                    var data = await FetchLatestData();
-                    tryMaxCount = 0;
-                    if (data != null)
-                    {
-                        SaveToJson(data);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    // 遇到错误，等待 10s 后重试
-                    Console.WriteLine(ex.ToString());
-                    await Task.Delay(10000);
-                }
+                SaveToJson(data);
             }
         }
 
