@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35707.178 d17.12
+VisualStudioVersion = 17.12.35707.178
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AirQualityApp.Server", "AirQualityApp.Server\AirQualityApp.Server.csproj", "{65F1A0E6-1B69-4367-8C59-D57D8A954D1B}"
 EndProject
@@ -16,6 +16,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{430C221E-E510-454E-AF12-CA1F3B6F6620}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SDK", "SDK", "{3BC0BD47-45D5-4E53-977B-81FF8F316916}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AirQualityApp.WinUI", "AirQualityApp.WinUI\AirQualityApp.WinUI.csproj", "{5F995D21-F8E6-430B-8738-CC4E2AF8577E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,12 @@ Global
 		{1CE53222-CD33-4DEB-A336-F6C8B6500482}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1CE53222-CD33-4DEB-A336-F6C8B6500482}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1CE53222-CD33-4DEB-A336-F6C8B6500482}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F995D21-F8E6-430B-8738-CC4E2AF8577E}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{5F995D21-F8E6-430B-8738-CC4E2AF8577E}.Debug|Any CPU.Build.0 = Debug|x64
+		{5F995D21-F8E6-430B-8738-CC4E2AF8577E}.Debug|Any CPU.Deploy.0 = Debug|x64
+		{5F995D21-F8E6-430B-8738-CC4E2AF8577E}.Release|Any CPU.ActiveCfg = Release|x64
+		{5F995D21-F8E6-430B-8738-CC4E2AF8577E}.Release|Any CPU.Build.0 = Release|x64
+		{5F995D21-F8E6-430B-8738-CC4E2AF8577E}.Release|Any CPU.Deploy.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,5 +56,6 @@ Global
 		{4918B41A-8223-44CA-AFF5-112AA3D8E431} = {3BC0BD47-45D5-4E53-977B-81FF8F316916}
 		{F91745E7-BA1F-4F44-A027-1CB33459F993} = {3BC0BD47-45D5-4E53-977B-81FF8F316916}
 		{1CE53222-CD33-4DEB-A336-F6C8B6500482} = {3BC0BD47-45D5-4E53-977B-81FF8F316916}
+		{5F995D21-F8E6-430B-8738-CC4E2AF8577E} = {B1E9751C-A6A2-48B4-A5F1-6327F08D6D67}
 	EndGlobalSection
 EndGlobal

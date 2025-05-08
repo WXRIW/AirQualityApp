@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "AirQualityApp.WinUI (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "AirQualityApp.WinUI (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
