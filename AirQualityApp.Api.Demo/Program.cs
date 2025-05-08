@@ -35,11 +35,11 @@ namespace AirQualityApp.Api.Demo
             //Console.WriteLine(JsonConvert.SerializeObject(aqAreaId2Dayspost, Formatting.Indented));
 
             //Console.WriteLine("\nGet All Citys list");
-            //var cityList = Web.Data.GetCities().Result;
+            //var cityList = Web.Areas.GetCities().Result;
             //Console.WriteLine(JsonConvert.SerializeObject(cityList, Formatting.Indented));
 
             //Console.WriteLine("\nGet City Area list");
-            //var areaList = Web.Data.GetAreaListByCity("Shanghai").Result;
+            //var areaList = Web.Areas.GetAreaListByCity("Shanghai").Result;
             //Console.WriteLine(JsonConvert.SerializeObject(areaList, Formatting.Indented));
         }
     }
