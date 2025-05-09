@@ -16,7 +16,21 @@
             Name = name;
         }
 
+        public CityInfo(string name, string displayName)
+        {
+            Name = name;
+            DisplayName = displayName;
+        }
+
+        /// <summary>
+        /// 城市名 (拼音，用于传递和存储)
+        /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// 显示名 (中文名)
+        /// </summary>
+        public string DisplayName {  get; set; }
     }
 
     public class AreaInfo : IAreaInfo

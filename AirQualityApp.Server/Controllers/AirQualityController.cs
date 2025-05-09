@@ -225,7 +225,7 @@ namespace AirQualityApp.Server.Controllers
         [ProducesResponseType(typeof(List<CityInfo>), StatusCodes.Status200OK)]
         public List<CityInfo> GetCities()
         {
-            return [new CityInfo("Shanghai")];
+            return [new CityInfo("Shanghai", "上海市")];
         }
 
         /// <summary>

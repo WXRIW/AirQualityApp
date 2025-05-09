@@ -1,0 +1,16 @@
+<UserControl
+    x:Class="AirQualityApp.WinUI.Controls.AirQualityChart"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:AirQualityApp.WinUI.Controls"
+    xmlns:lvc="using:LiveChartsCore.SkiaSharpView.WinUI"
+    xmlns:skia="using:LiveChartsCore.SkiaSharpView"
+    xmlns:charts="using:LiveChartsCore.Kernel.Sketches">
+
+    <Grid>
+        <lvc:CartesianChart
+            Series="{x:Bind Series, Mode=OneWay}"
+            XAxes="{x:Bind XAxes, Mode=OneWay}"
+            YAxes="{x:Bind YAxes, Mode=OneWay}" />
+    </Grid>
+</UserControl>
