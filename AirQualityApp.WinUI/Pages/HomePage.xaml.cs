@@ -1,11 +1,7 @@
 using AirQualityApp.Shared.Models;
-using LiveChartsCore;
-using LiveChartsCore.Defaults;
-using LiveChartsCore.SkiaSharpView;
-using LiveChartsCore.SkiaSharpView.Painting;
 using Microsoft.UI.Xaml.Controls;
-using SkiaSharp;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,36 +10,41 @@ namespace AirQualityApp.WinUI.Pages
 {
     public sealed partial class HomePage : Page
     {
-        public static ObservableCollection<CityInfo> StaticCities { get; set; } = new();
-        public static ObservableCollection<AreaInfo> StaticAreas { get; set; } = new();
-        public static ObservableCollection<AirQualityAreaData> StaticCurrentAreaData { get; set; } = new();
-        public static ObservableCollection<AirQualityCityData> StaticHistoricalCityData { get; set; } = new();
+        public ObservableCollection<CityInfo> Cities { get; set; } = [];
+        public ObservableCollection<AreaInfo> Areas { get; set; } = [];
+        public ObservableCollection<AirQualityAreaData> CurrentAreaData { get; set; } = [];
+        public List<AirQualityCityData> HistoricalCityData { get; set; } = [];
+        public ObservableCollection<AirQualityAreaData> CurrentHistoryAreaData { get; set; } = [];
 
-
-        public ObservableCollection<CityInfo> Cities
+        private DateTimeOffset _selectedDate = DateTimeOffset.Now;
+        public DateTimeOffset SelectedDate
         {
-            get => StaticCities;
-            set => StaticCities = value;
-        }
-        public ObservableCollection<AreaInfo> Areas
-        {
-            get => StaticAreas;
-            set => StaticAreas = value;
-        }
-        public ObservableCollection<AirQualityAreaData> CurrentAreaData
-        {
-            get => StaticCurrentAreaData;
-            set => StaticCurrentAreaData = value;
-        }
-        public ObservableCollection<AirQualityCityData> HistoricalCityData
-        {
-            get => StaticHistoricalCityData;
-            set => StaticHistoricalCityData = value;
+            get => _selectedDate;
+            set
+            {
+                if (_selectedDate != value)
+                {
+                    _selectedDate = value;
+                    LoadHistoricalData();
+                }
+            }
         }
 
-        public ISeries[] AQISeries { get; set; } = Array.Empty<ISeries>();
-        public Axis[] AQIXAxes { get; set; } = Array.Empty<Axis>();
-        public Axis[] AQIYAxes { get; set; } = new[] { new Axis { Name = "AQI", MinLimit = 0, MaxLimit = 500 } };
+        private TimeSpan _selectedTime = DateTimeOffset.Now.TimeOfDay
+            .Add(TimeSpan.FromMinutes(-DateTimeOffset.Now.TimeOfDay.Minutes)
+            .Add(TimeSpan.FromHours(-1)));
+        public TimeSpan SelectedTime
+        {
+            get => _selectedTime;
+            set
+            {
+                if (_selectedTime != value)
+                {
+                    _selectedTime = value;
+                    LoadHistoricalData();
+                }
+            }
+        }
 
         public HomePage()
         {
@@ -105,6 +106,7 @@ namespace AirQualityApp.WinUI.Pages
                     var data = await Api.Web.Data.GetCurrentAirQualityAreaDataByCity(city.Name, area.Id);
                     CurrentAreaData.Clear();
                     CurrentAreaData.Add(data);
+                    LoadHistoricalData(false);
                 }
                 catch (Exception ex)
                 {
@@ -117,35 +119,61 @@ namespace AirQualityApp.WinUI.Pages
         {
             try
             {
-                var history = await Api.Web.Data.GetAirQualityDataByCity(cityName, 7);
+                // 直接获取最近 1 个月的数据，应付一下够用了
+                var history = await Api.Web.Data.GetAirQualityDataByCity(cityName, 31);
                 HistoricalCityData.Clear();
+                CurrentHistoryAreaData.Clear();
                 foreach (var item in history)
                 {
                     if (item != null)
                         HistoricalCityData.Add(item);
                 }
+                LoadHistoricalData(false);
+            }
+            catch (Exception ex)
+            {
+                ShowError("加载历史数据失败: " + ex.Message);
+            }
+        }
 
-                var points = HistoricalCityData
-                    .Where(d => d.Areas?.FirstOrDefault()?.Nodes?.FirstOrDefault()?.AirQuality?.AQI is int)
-                    .Select(d => new ObservableValue(d.Areas.First().Nodes.First().AirQuality.AQI.Value))
-                    .ToArray();
+        private void HistoryDatePicker_DateChanged(object sender, DatePickerValueChangedEventArgs args)
+        {
+            SelectedDate = args.NewDate;
+        }
 
-                AQISeries = new ISeries[]
+        private void HistoryTimePicker_TimeChanged(object sender, TimePickerValueChangedEventArgs args)
+        {
+            SelectedTime = args.NewTime;
+        }
+
+        private void LoadHistoricalData(bool isShowFailedMessage = true)
+        {
+            if (CityComboBox.SelectedItem is not CityInfo city)
+                return;
+
+            try
+            {
+                DateTime selectedDateTime = SelectedDate.Date + SelectedTime;
+                // 在 HistoricalCityData 中找到与 selectedDateTime 匹配的项，并放到 CurrentHistoryAreaData 中
+                var historyData = HistoricalCityData.FirstOrDefault(data => data.Date.Date == selectedDateTime.Date
+                    && data.Date.Hour == selectedDateTime.Hour);
+                if (historyData != null)
                 {
-                    new LineSeries<ObservableValue>
+                    var areaData = historyData.Areas.FirstOrDefault(area => area.Area.Id == (AreaComboBox.SelectedItem as AreaInfo)?.Id);
+                    if (areaData != null)
                     {
-                        Values = points,
-                        Fill = new SolidColorPaint
-                        {
-                            Color = new SKColor(30, 144, 255, 80) // 半透明天蓝色
-                        },
-                        GeometrySize = 10
+                        CurrentHistoryAreaData.Clear();
+                        CurrentHistoryAreaData.Add(areaData);
                     }
-                };
-
-                AQIXAxes = new[] {
-                    new Axis { Labels = HistoricalCityData.Select(d => d.Date.ToString("MM-dd")).ToArray() }
-                };
+                }
+                else if (isShowFailedMessage)
+                {
+                    ShowError("没有找到历史数据，请选择其他日期或时间。");
+                }
+                else
+                {
+                    CurrentHistoryAreaData.Clear();
+                }
             }
             catch (Exception ex)
             {

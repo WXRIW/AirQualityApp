@@ -5,7 +5,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:AirQualityApp.WinUI"
     xmlns:models="using:AirQualityApp.Shared.Models"
-    xmlns:controls="using:AirQualityApp.WinUI.Controls"
     xmlns:cov="using:AirQualityApp.WinUI.Converters">
 
     <Page.Resources>
@@ -39,14 +38,11 @@
                 </StackPanel>
             </Grid>
 
-            <!-- 当前空气质量 -->
             <TextBlock Text="当前空气质量" FontSize="18" FontWeight="Bold" Margin="0,16,0,0"/>
             <ItemsControl ItemsSource="{x:Bind CurrentAreaData}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate x:DataType="models:AirQualityAreaData">
                         <StackPanel Spacing="8">
-                            <!--<TextBlock Text="{x:Bind Area.Name}" FontSize="16" FontWeight="Bold" />-->
-
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="180*" />
@@ -110,9 +106,82 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
 
-            <!-- 历史 AQI 折线图 -->
-            <TextBlock Text="过去一周空气质量趋势" FontSize="18" FontWeight="Bold" Margin="0,16,0,0"/>
-            <controls:AirQualityChart x:Name="AQIChart" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="20,150,20,20"/>
+            <TextBlock Text="历史空气质量" FontSize="18" FontWeight="Bold" Margin="0,16,0,0"/>
+            <StackPanel Orientation="Horizontal" Spacing="12" VerticalAlignment="Center">
+                <DatePicker x:Name="HistoryDatePicker"
+                            Date="{x:Bind SelectedDate, Mode=TwoWay}"
+                            DateChanged="HistoryDatePicker_DateChanged" />
+                <TimePicker x:Name="HistoryTimePicker"
+                            ClockIdentifier="24HourClock"
+                            Time="{x:Bind SelectedTime, Mode=TwoWay}"
+                            TimeChanged="HistoryTimePicker_TimeChanged" />
+            </StackPanel>
+            <ItemsControl ItemsSource="{x:Bind CurrentHistoryAreaData}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="models:AirQualityAreaData">
+                        <StackPanel Spacing="8">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="180*" />
+                                    <ColumnDefinition Width="80*" />
+                                    <ColumnDefinition Width="80*" />
+                                    <ColumnDefinition Width="80*" />
+                                    <ColumnDefinition Width="80*" />
+                                    <ColumnDefinition Width="80*" />
+                                    <ColumnDefinition Width="80*" />
+                                    <ColumnDefinition Width="100*" />
+                                    <ColumnDefinition Width="120*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="监测点" FontWeight="Bold" />
+                                <TextBlock Text="AQI" Grid.Column="1" FontWeight="Bold" />
+                                <TextBlock Text="PM2.5" Grid.Column="2" FontWeight="Bold" />
+                                <TextBlock Text="PM10" Grid.Column="3" FontWeight="Bold" />
+                                <TextBlock Text="CO" Grid.Column="4" FontWeight="Bold" />
+                                <TextBlock Text="NO₂" Grid.Column="5" FontWeight="Bold" />
+                                <TextBlock Text="O₃" Grid.Column="6" FontWeight="Bold" />
+                                <TextBlock Text="空气质量" Grid.Column="7" FontWeight="Bold" />
+                                <TextBlock Text="主要污染物" Grid.Column="8" FontWeight="Bold" />
+                            </Grid>
+
+                            <ItemsControl ItemsSource="{x:Bind Nodes}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate x:DataType="models:AirQualityNodeData">
+                                        <Grid Margin="0,2">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="180*" />
+                                                <ColumnDefinition Width="80*" />
+                                                <ColumnDefinition Width="80*" />
+                                                <ColumnDefinition Width="80*" />
+                                                <ColumnDefinition Width="80*" />
+                                                <ColumnDefinition Width="80*" />
+                                                <ColumnDefinition Width="80*" />
+                                                <ColumnDefinition Width="100*" />
+                                                <ColumnDefinition Width="120*" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBlock Text="{x:Bind Node.Name}" />
+
+                                            <TextBlock Text="{x:Bind AirQuality.AQI}" Grid.Column="1" VerticalAlignment="Center" />
+                                            <TextBlock Text="{x:Bind AirQuality.PM25}" Grid.Column="2" VerticalAlignment="Center" />
+                                            <TextBlock Text="{x:Bind AirQuality.PM10}" Grid.Column="3" VerticalAlignment="Center" />
+                                            <TextBlock Text="{x:Bind AirQuality.CO}" Grid.Column="4" VerticalAlignment="Center" />
+                                            <TextBlock Text="{x:Bind AirQuality.NO2}" Grid.Column="5" VerticalAlignment="Center" />
+                                            <TextBlock Text="{x:Bind AirQuality.O3}" Grid.Column="6" VerticalAlignment="Center" />
+
+                                            <StackPanel Orientation="Horizontal" Spacing="10" Grid.Column="7">
+                                                <Ellipse Fill="{x:Bind AirQuality.AQI, Converter={StaticResource AqiToBrushConverter}}" Margin="0,1,0,-1" Width="16" Height="16"/>
+                                                <TextBlock Text="{x:Bind AirQuality.Quality, Converter={StaticResource QualityToChineseConverter}}" VerticalAlignment="Center" />
+                                            </StackPanel>
+
+                                            <TextBlock Text="{x:Bind AirQuality.PrimaryPollutant, FallbackValue='--'}" Grid.Column="8" VerticalAlignment="Center" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
 
         </StackPanel>
     </ScrollViewer>
