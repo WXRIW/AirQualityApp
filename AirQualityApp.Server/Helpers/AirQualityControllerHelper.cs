@@ -1,9 +1,9 @@
-﻿using AirQualityApp.Shared.Models; // 确保共享模型类的命名空间正确
-using System.Globalization; // 用于 DateTime 解析
-using System.Text.Json; // 用于 JSON 序列化/反序列化
-using System.Text.RegularExpressions; // 用于正则表达式
+﻿using AirQualityApp.Shared.Models;
+using System.Globalization;
+using System.Text.Json;
+using System.Text.RegularExpressions;
 
-namespace AirQualityApp.Server.Helpers // 定义一个合适的命名空间
+namespace AirQualityApp.Server.Helpers
 {
     /// <summary>
     /// 包含用于访问和处理空气质量数据文件的静态辅助方法。
@@ -20,8 +20,6 @@ namespace AirQualityApp.Server.Helpers // 定义一个合适的命名空间
         {
             PropertyNameCaseInsensitive = true // 忽略属性名大小写
         };
-
-
 
         /// <summary>
         /// 获取指定城市的数据文件存储路径 (目前仅支持上海)。
