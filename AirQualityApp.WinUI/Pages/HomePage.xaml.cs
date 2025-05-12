@@ -119,8 +119,8 @@ namespace AirQualityApp.WinUI.Pages
         {
             try
             {
-                // 直接获取最近 1 个月的数据，应付一下够用了
-                var history = await Api.Web.Data.GetAirQualityDataByCity(cityName, 31);
+                // 直接获取最近 7 天的数据，应付一下够用了
+                var history = await Api.Web.Data.GetAirQualityDataByCity(cityName, 7);
                 HistoricalCityData.Clear();
                 CurrentHistoryAreaData.Clear();
                 foreach (var item in history)
