@@ -130,6 +130,14 @@
                             Text="{x:Bind Version}" />
                         <toolkit:SettingsExpander.Items>
                             <toolkit:SettingsCard
+                                Click="StoreLinkCard_Click"
+                                Header="Microsoft Store"
+                                IsClickEnabled="True">
+                                <toolkit:SettingsCard.ActionIcon>
+                                    <FontIcon Glyph="&#xE8A7;" />
+                                </toolkit:SettingsCard.ActionIcon>
+                            </toolkit:SettingsCard>
+                            <toolkit:SettingsCard
                                 Click="GitRepoLinkCard_Click"
                                 Header="GitHub 仓库"
                                 IsClickEnabled="True">

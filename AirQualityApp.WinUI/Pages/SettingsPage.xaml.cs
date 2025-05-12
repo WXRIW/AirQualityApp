@@ -39,5 +39,10 @@ namespace AirQualityApp.WinUI.Pages
         {
             await Launcher.LaunchUriAsync(new Uri("https://github.com/WXRIW/AirQualityApp/issues"));
         }
+
+        private async void StoreLinkCard_Click(object sender, RoutedEventArgs e)
+        {
+            await Launcher.LaunchUriAsync(new Uri("ms-windows-store://pdp?productid=9NZB5V13H77B"));
+        }
     }
 }
