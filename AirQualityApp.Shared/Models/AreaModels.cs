@@ -30,7 +30,7 @@
         /// <summary>
         /// 显示名 (中文名)
         /// </summary>
-        public string DisplayName {  get; set; }
+        public string DisplayName { get; set; }
     }
 
     public class AreaInfo : IAreaInfo
