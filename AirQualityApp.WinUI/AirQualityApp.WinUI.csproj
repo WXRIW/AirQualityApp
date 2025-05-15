@@ -9,6 +9,9 @@
     <RuntimeIdentifiers>win-x86;win-x64;win-arm64</RuntimeIdentifiers>
     <UseWinUI>true</UseWinUI>
     <Nullable>enable</Nullable>
+	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AssemblyVersion>1.0.1</AssemblyVersion>
+    <FileVersion>1.0.1</FileVersion>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Pages\HomePage.xaml" />
@@ -36,6 +39,8 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AirQualityApp.Api\AirQualityApp.Api.csproj" />
+    <TrimmerRootAssembly Include="AirQualityApp.Api" />
+    <TrimmerRootAssembly Include="AirQualityApp.Shared" />
   </ItemGroup>
   <ItemGroup>
     <Page Update="Pages\HomePage.xaml">
