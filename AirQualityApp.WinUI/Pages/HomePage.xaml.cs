@@ -75,6 +75,11 @@ namespace AirQualityApp.WinUI.Pages
             }
         }
 
+        private void RefreshButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+        {
+            LoadInitialData(true);
+        }
+
         private async void CityComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (CityComboBox.SelectedItem is CityInfo city)
