@@ -84,7 +84,8 @@ namespace AirQualityApp.WinUI.Pages
                     var areas = await Api.Web.Areas.GetAreaListByCity(city.Name);
                     Areas.Clear();
                     foreach (var area in areas)
-                        Areas.Add(area);
+                        if (area != null)
+                            Areas.Add(area);
 
                     AreaComboBox.SelectedIndex = 0;
                     await LoadCityData(city.Name);
@@ -119,8 +120,8 @@ namespace AirQualityApp.WinUI.Pages
         {
             try
             {
-                // 直接获取最近 7 天的数据，应付一下够用了
-                var history = await Api.Web.Data.GetAirQualityDataByCity(cityName, 7);
+                // 先获取最近 2 天的数据
+                var history = await Api.Web.Data.GetAirQualityDataByCity(cityName, 2);
                 HistoricalCityData.Clear();
                 CurrentHistoryAreaData.Clear();
                 foreach (var item in history)
@@ -146,7 +147,7 @@ namespace AirQualityApp.WinUI.Pages
             SelectedTime = args.NewTime;
         }
 
-        private void LoadHistoricalData(bool isShowFailedMessage = true)
+        private async void LoadHistoricalData(bool isShowFailedMessage = true)
         {
             if (CityComboBox.SelectedItem is not CityInfo city)
                 return;
@@ -157,6 +158,21 @@ namespace AirQualityApp.WinUI.Pages
                 // 在 HistoricalCityData 中找到与 selectedDateTime 匹配的项，并放到 CurrentHistoryAreaData 中
                 var historyData = HistoricalCityData.FirstOrDefault(data => data.Date.Date == selectedDateTime.Date
                     && data.Date.Hour == selectedDateTime.Hour);
+                if (historyData == null)
+                {
+                    // 可能是当前日期的数据没有被预获取，再往前获取 2 天
+                    var history = await Api.Web.Data.GetAirQualityDataByCity(city.Name, selectedDateTime.Date, 2);
+                    if (history != null)
+                    {
+                        foreach (var item in history)
+                        {
+                            if (item != null && !HistoricalCityData.Any(t => item.Date.Equals(t.Date)))
+                                HistoricalCityData.Add(item);
+                        }
+                        historyData = HistoricalCityData.FirstOrDefault(data => data.Date.Date == selectedDateTime.Date
+                            && data.Date.Hour == selectedDateTime.Hour);
+                    }
+                }
                 if (historyData != null)
                 {
                     var areaData = historyData.Areas.FirstOrDefault(area => area.Area.Id == (AreaComboBox.SelectedItem as AreaInfo)?.Id);
