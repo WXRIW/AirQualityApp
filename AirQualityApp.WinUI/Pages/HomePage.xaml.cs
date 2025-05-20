@@ -54,6 +54,15 @@ namespace AirQualityApp.WinUI.Pages
 
         private async void LoadInitialData(bool isForceRefresh = false)
         {
+            if (isForceRefresh)
+            {
+                Cities.Clear();
+                Areas.Clear();
+                CurrentAreaData.Clear();
+                HistoricalCityData.Clear();
+                CurrentHistoryAreaData.Clear();
+            }
+
             try
             {
                 //if (!await Connectivity.IsConnected())
@@ -63,7 +72,6 @@ namespace AirQualityApp.WinUI.Pages
                 //}
 
                 var cities = await Api.Web.Areas.GetCities();
-                Cities.Clear();
                 foreach (var city in cities)
                     Cities.Add(city);
 
@@ -159,6 +167,8 @@ namespace AirQualityApp.WinUI.Pages
 
             try
             {
+                CurrentHistoryAreaData.Clear();
+
                 DateTime selectedDateTime = SelectedDate.Date + SelectedTime;
                 // 在 HistoricalCityData 中找到与 selectedDateTime 匹配的项，并放到 CurrentHistoryAreaData 中
                 var historyData = HistoricalCityData.FirstOrDefault(data => data.Date.Date == selectedDateTime.Date
@@ -183,17 +193,12 @@ namespace AirQualityApp.WinUI.Pages
                     var areaData = historyData.Areas.FirstOrDefault(area => area.Area.Id == (AreaComboBox.SelectedItem as AreaInfo)?.Id);
                     if (areaData != null)
                     {
-                        CurrentHistoryAreaData.Clear();
                         CurrentHistoryAreaData.Add(areaData);
                     }
                 }
                 else if (isShowFailedMessage)
                 {
                     ShowError("没有找到历史数据，请选择其他日期或时间。");
-                }
-                else
-                {
-                    CurrentHistoryAreaData.Clear();
                 }
             }
             catch (Exception ex)
