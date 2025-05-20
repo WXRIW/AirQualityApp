@@ -82,7 +82,7 @@ namespace AirQualityApp.Server.Helpers
         /// <param name="cityName">城市名称</param>
         /// <param name="limitDays">限制返回数据的天数范围（基于文件时间戳的日期部分）。-1 表示返回所有找到的文件。</param>
         /// <returns>按时间戳降序排列的文件信息元组列表 (FilePath, Timestamp)。</returns>
-        public static List<(string FilePath, DateTime Timestamp)> GetCityDataFiles(string cityName, int limitDays = -1)
+        public static List<(string FilePath, DateTime Timestamp)> GetCityDataFiles(string cityName, int limitDays = -1, DateTime? endDate = null)
         {
             string dataFolder;
             try
@@ -117,15 +117,14 @@ namespace AirQualityApp.Server.Helpers
             // 按时间戳降序排序 
             fileInfos.Sort((a, b) => b.Timestamp.CompareTo(a.Timestamp));
 
-
             if (limitDays > 0)
             {
-                // 计算起始日期阈值
-                var thresholdDate = DateTime.Now.Date.AddDays(-(limitDays - 1));
-                // 筛选出日期大于等于阈值的文件
-                fileInfos = fileInfos.Where(f => f.Timestamp.Date >= thresholdDate).ToList();
-            }
+                var effectiveEndDate = endDate?.Date ?? DateTime.Now.Date;
+                var thresholdDate = effectiveEndDate.AddDays(-(limitDays - 1));
 
+                fileInfos = fileInfos.Where(f => f.Timestamp.Date >= thresholdDate && f.Timestamp.Date <= effectiveEndDate).ToList();
+            }
+            // 如果 limitDays <= 0，则不进行时间过滤，返回所有排序后的文件
             return fileInfos;
         }
 

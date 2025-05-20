@@ -78,6 +78,57 @@ namespace AirQualityApp.Server.Controllers
         }
 
         /// <summary>
+        /// 获取指定城市的空气质量数据（基于指定日期往前数天）。
+        /// </summary>
+        /// <param name="cityName">城市名，如 Shanghai</param>
+        /// <param name="startDate">作为范围结束日期的日期（包含）</param>
+        /// <param name="limitDays">限制返回数据的天数（基于 <paramref name="startDate"/> 往前数），默认为 3。</param>
+        /// <returns>返回 AirQualityCityData 对象的列表。</returns>
+        [HttpGet("data/{cityName}/range")]
+        [ProducesResponseType(typeof(List<AirQualityCityData?>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public List<AirQualityCityData?> GetAirQualityDataByCity(string cityName, [FromQuery] DateTime startDate, [FromQuery] int limitDays = 3)
+        {
+            if (limitDays <= 0 && limitDays != -1)
+            {
+                Console.WriteLine($"[控制器警告] 城市 '{cityName}' range 请求的 limitDays 参数无效: {limitDays}");
+                return [];
+            }
+
+            var results = new List<AirQualityCityData?>();
+            try
+            {
+                var files = AirQualityControllerHelper.GetCityDataFiles(cityName, limitDays, startDate);
+
+                // 如果没有找到任何文件，直接返回空列表
+                if (files.Count == 0)
+                {
+                    Console.WriteLine($"[控制器信息] 城市 '{cityName}' 日期范围数据请求未找到文件。范围: 结束日期 {startDate.Date:yyyy-MM-dd}, 天数 {limitDays}.");
+                    return [];
+                }
+
+                foreach (var fileInfo in files)
+                {
+                    var cityData = AirQualityControllerHelper.ReadCityData(fileInfo.FilePath);
+                    results.Add(cityData);
+                }
+                return results;
+            }
+            catch (NotSupportedException ex)
+            {
+                // 城市不支持，返回空列表或 NotFound
+                Console.Error.WriteLine($"[控制器错误] 城市 '{cityName}' 日期范围数据请求失败，城市不受支持: {ex.Message}");
+                return [];
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine($"[控制器错误] 获取城市 '{cityName}' 日期范围数据时发生意外错误: {ex.Message}");
+                return [];
+            }
+        }
+
+        /// <summary>
         /// 获取指定城市指定地区编号的当前空气质量数据
         /// </summary>
         /// <param name="cityName">城市名，如 Shanghai</param>

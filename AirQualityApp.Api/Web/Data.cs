@@ -35,6 +35,20 @@ namespace AirQualityApp.Api.Web
         }
 
         /// <summary>
+        /// 获取指定城市的空气质量数据（基于指定日期往前数天）。
+        /// </summary>
+        /// <param name="cityName">城市名，如 Shanghai</param>
+        /// <param name="startDate">作为范围结束日期的日期（包含）</param>
+        /// <param name="limitDays">限制返回数据的天数（基于 <paramref name="startDate"/> 往前数），默认为 3。</param>
+        /// <returns>返回 AirQualityCityData 对象的列表。</returns>
+        public static async Task<List<AirQualityCityData?>> GetAirQualityDataByCity(string cityName, DateTime startDate, int limitDays = 3)
+        {
+            var responseString = await Client.GetStringAsync($"{ServerDefine.ServerUrl}/data/{cityName}/range?startDate={startDate:yyyy-MM-dd}&limitDays={limitDays}");
+            var result = JsonConvert.DeserializeObject<List<AirQualityCityData?>>(responseString);
+            return result!;
+        }
+
+        /// <summary>
         /// 获取指定城市指定地区编号的当前空气质量数据
         /// </summary>
         /// <param name="cityName">城市名，如 Shanghai</param>
