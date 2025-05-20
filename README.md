@@ -4,7 +4,7 @@
 # AirQualityApp
 
 <a href="https://apps.microsoft.com/detail/9nzb5v13h77b?referrer=appbadge&launch=true&mode=full">
-	<img src="https://get.microsoft.com/images/en-us%20dark.svg" width="200"/>
+	<img src="https://get.microsoft.com/images/zh-cn%20dark.svg" width="200"/>
 </a>
 
 Air Quality app，空气质量监测平台，查询当前及历史空气质量。
