@@ -193,12 +193,17 @@ namespace AirQualityApp.WinUI.Pages
                     var areaData = historyData.Areas.FirstOrDefault(area => area.Area.Id == (AreaComboBox.SelectedItem as AreaInfo)?.Id);
                     if (areaData != null)
                     {
+                        CurrentHistoryAreaData.Clear();
                         CurrentHistoryAreaData.Add(areaData);
                     }
                 }
                 else if (isShowFailedMessage)
                 {
                     ShowError("没有找到历史数据，请选择其他日期或时间。");
+                }
+                else
+                {
+                    CurrentHistoryAreaData.Clear();
                 }
             }
             catch (Exception ex)
